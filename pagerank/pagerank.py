@@ -2,6 +2,7 @@ import os
 import random
 import re
 import sys
+import copy
 
 DAMPING = 0.85
 SAMPLES = 10000
@@ -59,7 +60,7 @@ def transition_model(corpus, page, damping_factor):
     """
     number_of_pages = len(corpus)
     # Create the dictionary representing the probability distribution over which page a random surfer would visit next
-    distribution = corpus.copy()
+    distribution = copy.deepcopy(corpus)
     for prob in distribution:
         distribution[prob] = 0
     
@@ -90,19 +91,19 @@ def sample_pagerank(corpus, damping_factor, n):
     if n < 1:
         raise AttributeError("n must be >= 1")
      # Create the dictionary representing the probability distribution.
-    distribution = corpus.copy()
+    distribution = copy.deepcopy(corpus)
     for pagerank in distribution:
         distribution[pagerank] = 0
     
     # Helper dictionaries.
-    samples = distribution.copy()
+    samples = copy.deepcopy(distribution)
     
 
     # Get a random page of the corpus to start with.
     page = random.choice(list(corpus.keys()))
     
     
-    for i in range(n):
+    for _ in range(n):
         samples[page] += 1
         transition_probabilities = transition_model(corpus, page, damping_factor)
         # Returns list of size k, therefore indexing at 0.
@@ -126,16 +127,17 @@ def iterate_pagerank(corpus, damping_factor):
 
     number_of_pages = len(corpus)
      # Create the dictionary representing the probability distribution, starting uniformly.
-    distribution = corpus.copy()
+    distribution = copy.deepcopy(corpus)
     for pagerank in distribution:
         distribution[pagerank] = 1 / number_of_pages
     
     # Helper dictionaries.
-    num_links = distribution.copy()
+    num_links = copy.deepcopy(distribution)
     for page in num_links:
         num_links[page] = len(corpus[page])
     
-    links_to_page = distribution.copy()
+    # Instead of .copy() always use copy.deepcopy(x)!
+    links_to_page = copy.deepcopy(distribution)
     for page in links_to_page: 
         links_to_page[page] = []
         for corp in corpus:
@@ -154,7 +156,7 @@ def iterate_pagerank(corpus, damping_factor):
 
 
     while not check_values(distribution, old_distribution):
-        old_distribution = distribution.copy()
+        old_distribution = copy.deepcopy(distribution)
         for pagerank in distribution:
             sum = 0
             for page in links_to_page[pagerank]:
