@@ -74,7 +74,7 @@ def transition_model(corpus, page, damping_factor):
         distribution[prob] += (1-damping_factor) * (1/number_of_pages)
             
     for prob in corpus[page]:
-        distribution[prob] += 0.85 * (1/len(corpus[page]))
+        distribution[prob] += damping_factor * (1/len(corpus[page]))
         
     return distribution
 
