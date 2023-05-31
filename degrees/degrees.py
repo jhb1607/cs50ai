@@ -116,7 +116,7 @@ def shortest_path(source, target):
                     actions.append(new_node.action)
                     cells.append(new_node.state)
                     new_node = new_node.parent
-                 
+                # Reverse order of the lists
                 actions.reverse()
                 cells.reverse()
                 i = 0
