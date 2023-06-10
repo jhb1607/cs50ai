@@ -28,10 +28,14 @@ def main():
     #     print(creator.domains[variable])
     
     
-    creator.enforce_node_consistency()
-    print(creator.ac3())
-    print(len(creator.crossword.overlaps.keys()))
-    print(creator.select_unassigned_variable(dict()))
+    # creator.enforce_node_consistency()
+    # print(creator.ac3())
+    # print(len(creator.crossword.overlaps.keys()))
+    # print(creator.select_unassigned_variable(dict()))
+    
+    dicto = {"yo": 5, "no": 9, "what": 2, "hmm": 3}
+    ordered = sorted(dicto, key=lambda num: dicto[num])
+    print(ordered)
     
     
 if __name__ == "__main__":

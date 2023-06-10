@@ -234,6 +234,9 @@ class CrosswordCreator():
         ties_neighbors = dict()
         for tie in ties:
             ties_neighbors[tie] = len(self.crossword.neighbors(tie))
+            for neighbor in self.crossword.neighbors(tie):
+                if neighbor in assignment.keys():
+                    ties_neighbors[tie] -= 1
         ties = sorted(ties_neighbors, key=lambda neighbors: ties_neighbors[neighbors], reverse=True)
         
         return ties[0]
@@ -247,22 +250,27 @@ class CrosswordCreator():
         `assignment` is a mapping from variables (keys) to words (values).
 
         If no assignment is possible, return None.
-        """
+        """ 
         if self.assignment_complete(assignment):
             return assignment
 
         var = self.select_unassigned_variable(assignment)
         
-        for value in self.domains[var]:
-            assignment_copy = assignment.copy()
-            assignment_copy[var] = value
-            if self.consistent(assignment_copy):
-                if self.assignment_complete(assignment):
-                    return assignment
-                result = self.backtrack(assignment_copy)
+        for value in self.order_domain_values(var, assignment):
+            
+            assignment[var] = value
+            
+            if self.consistent(assignment):
+                
+                arcs = list()
+                for neighbor in self.crossword.neighbors(var):
+                    arcs.append((var, neighbor))
+                self.ac3(arcs)
+                result = self.backtrack(assignment)
                 if result is not None:
                     return result
-            assignment_copy.pop(var)
+            else: 
+                del assignment[var]
         return None
                 
              
