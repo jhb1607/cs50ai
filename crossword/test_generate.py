@@ -17,15 +17,22 @@ def main():
     creator = CrosswordCreator(crossword)
     # print(creator.domains)
     # print(creator.domains[Variable(4, 1, "across", 4)][0])
-    for variable in creator.domains:
-        print(creator.domains[variable])
-        copied_variable = creator.domains[variable].copy()
-        for word in creator.domains[variable]:
-            if len(word) is not variable.length:
-                copied_variable.remove(word)
-                print(f"removed {word}")
-        creator.domains[variable] = copied_variable
-        print(creator.domains[variable])
-
+    # for variable in creator.domains:
+    #     print(creator.domains[variable])
+    #     copied_variable = creator.domains[variable].copy()
+    #     for word in creator.domains[variable]:
+    #         if len(word) is not variable.length:
+    #             copied_variable.remove(word)
+    #             print(f"removed {word}")
+    #     creator.domains[variable] = copied_variable
+    #     print(creator.domains[variable])
+    
+    
+    creator.enforce_node_consistency()
+    print(creator.ac3())
+    print(len(creator.crossword.overlaps.keys()))
+    print(creator.select_unassigned_variable(dict()))
+    
+    
 if __name__ == "__main__":
     main()
