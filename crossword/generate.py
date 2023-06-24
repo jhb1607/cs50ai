@@ -196,7 +196,7 @@ class CrosswordCreator():
         The first value in the list, for example, should be the one
         that rules out the fewest values among the neighbors of `var`.
         """
-        # Counting contraints for each possible value of var. 
+        # Counting constraints for each possible value of var. 
         constraints = dict()
         for value in self.domains[var]:
             constraints[value] = 0
